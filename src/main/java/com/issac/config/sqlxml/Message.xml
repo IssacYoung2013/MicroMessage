@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.issac.dao.IMessage">
+
+    <sql id="columns">
+        ID,COMMAND,DESCRIPTION,CONTENT
+    </sql>
+
+    <resultMap type="com.issac.bean.Message" id="MessageResult">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="COMMAND" jdbcType="VARCHAR" property="command"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="CONTENT" jdbcType="VARCHAR" property="content"/>
+    </resultMap>
+
+    <select id="queryMessageList" parameterType="com.issac.bean.Message" resultMap="MessageResult">
+        select
+        <include refid="columns"/>
+        from MESSAGE
+        <where>
+            <if test="command != null and !&quot;&quot;.equals(command.trim())">and COMMAND = #{command}</if>
+            <if test="description != null and !&quot;&quot;.equals(description.trim())">and DESCRIPTION like '%'
+                #{description} '%'
+            </if>
+        </where>
+
+        <!--代替where标签-->
+        <trim prefix="where" prefixOverrides="and/or">
+            <if test="command != null and !&quot;&quot;.equals(command.trim())">and COMMAND = #{command}</if>
+            <if test="description != null and !&quot;&quot;.equals(description.trim())">and DESCRIPTION like '%'
+                #{description} '%'
+            </if>
+        </trim>
+
+    </select>
+
+    <update id="">
+        UPDATE MESSAGE set COMMAND = #{command},DESCRIPTION =#{description}
+        <set>
+            <if test="command != null and !&quot;&quot;.equals(command.trim())">COMMAND = #{command},</if>
+            <if test="description != null and !&quot;&quot;.equals(description.trim())">DESCRIPTION = #{description},
+            </if>
+            <choose>
+                <when test=""></when>
+                <when test=""></when>
+                <when test=""></when>
+                <when test=""></when>
+                <otherwise></otherwise>
+            </choose>
+        </set>
+    </update>
+
+    <delete id="deleteOne" parameterType="int">
+        delete from MESSAGE where ID = #{_parameter}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from MESSAGE where ID IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Command">
+
+
+    <resultMap type="com.issac.bean.Command" id="Command">
+        <id column="C_ID" jdbcType="INTEGER" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <collection property="commandContentList" resultMap="CommandContent.Content"/>
+    </resultMap>
+
+    <select id="queryCommandList" parameterType="com.issac.bean.Command" resultMap="Command">
+        SELECT a.ID C_ID,a.NAME,a.DESCRIPTION,b.ID,b.COMMAND_ID,b.CONTENT
+        FROM COMMAND a LEFT JOIN COMMAND_CONTENT b
+        ON a.ID = b.COMMAND_ID
+        <where>
+            <if test="name != null and !&quot;&quot;.equals(name.trim())">and a.NAME = #{name}</if>
+            <if test="description != null and !&quot;&quot;.equals(description.trim())">and a.DESCRIPTION like '%'
+                #{description} '%'
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.issac.bean.Command">
+    insert into COMMAND(name,description) VALUES (#{name},#{description})
+</insert>
+</mapper>

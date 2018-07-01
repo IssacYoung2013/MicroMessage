@@ -1,6 +1,6 @@
 package com.issac.servlet;
 
-import com.issac.service.QueryService;
+import com.issac.service.MaintainService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * author:  ywy
- * date:  2018-06-29
- * desc:
+ *
+ *
+ * @author Issac
+ *  *   @date    2018-06-30
+ * @desc
  */
 @SuppressWarnings("serial")
-public class ListServlet extends HttpServlet {
+public class DeleteOneServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -23,19 +25,12 @@ public class ListServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         // 接收页面的值
-        String command = req.getParameter("command");
-        String description = req.getParameter("description");
-
-        // 向页面传值
-        req.setAttribute("command", command);
-        req.setAttribute("description", description);
-        QueryService listService = new QueryService();
-
-        // 查询消息列表并传给页面
-        req.setAttribute("messageList", listService.queryMessageList(command, description));
+        String id = req.getParameter("id");
+        MaintainService maintainService = new MaintainService();
+        maintainService.deleteOne(id);
 
         //向页面跳转
-        req.getRequestDispatcher("/WEB-INF/jsp/back/list.jsp").forward(req, resp);
+        req.getRequestDispatcher("/List.action").forward(req, resp);
     }
 
     @Override

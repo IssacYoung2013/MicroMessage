@@ -16,4 +16,50 @@
     <servlet-name>ListServlet</servlet-name>
     <url-pattern>/List.action</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteOneServlet</servlet-name>
+    <servlet-class>com.issac.servlet.DeleteOneServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DeleteOneServlet</servlet-name>
+    <url-pattern>/DeleteOne.action</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteBatchServlet</servlet-name>
+    <servlet-class>com.issac.servlet.DeleteBatchServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DeleteBatchServlet</servlet-name>
+    <url-pattern>/DeleteBatch.action</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>InitTalkServlet</servlet-name>
+    <servlet-class>com.issac.servlet.InitTalkServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>InitTalkServlet</servlet-name>
+    <url-pattern>/InitTalk.action</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AutoReplyServlet</servlet-name>
+    <servlet-class>com.issac.servlet.AutoReplyServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AutoReplyServlet</servlet-name>
+    <url-pattern>/AutoReply.action</url-pattern>
+  </servlet-mapping>
+
+
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param>
 </web-app>
