@@ -16,7 +16,7 @@ public class CommandContent {
     /**
     * 指令id
     */
-    private int commandId;
+    private String commandId;
 
     /**
     *
@@ -29,11 +29,11 @@ public class CommandContent {
         return id;
     }
 
-    public int getCommandId() {
+    public String getCommandId() {
         return commandId;
     }
 
-    public void setCommandId(int commandId) {
+    public void setCommandId(String commandId) {
         this.commandId = commandId;
     }
 

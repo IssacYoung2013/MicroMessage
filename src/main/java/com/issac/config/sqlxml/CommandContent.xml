@@ -15,5 +15,15 @@
 
     </resultMap>
 
+    <insert id="insertOne" parameterType="com.issac.bean.CommandContent">
+        INSERT INTO COMMAND_CONTENT(CONTENT,COMMAND_ID) VALUES (#{content},#{commandId})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO COMMAND_CONTENT(CONTENT,COMMAND_ID) VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.content},#{item.commandId})
+        </foreach>
+    </insert>
 
 </mapper>

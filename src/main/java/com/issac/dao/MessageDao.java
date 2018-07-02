@@ -21,19 +21,35 @@ import java.util.concurrent.locks.Condition;
  */
 public class MessageDao {
 
-    public List<Message> queryMessageList(String command, String description) {
+    public List<Message> queryMessageList(Map<String,Object> parameter) {
         DBAccess dbAccess = new DBAccess();
         List<Message> messageList = new ArrayList<>();
         SqlSession sqlSession = null;
         try {
             sqlSession = dbAccess.getSqlSession();
-            Message message = new Message();
-            message.setCommand(command);
-            message.setDescription(description);
             // 通过sqlSession执行sQL语句
-//            messageList = sqlSession.selectList("Message.queryMessageList",message);
             IMessage imessage = sqlSession.getMapper(IMessage.class);
-            messageList = imessage.queryMessageList(message);
+            messageList = imessage.queryMessageList(parameter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                sqlSession.close();
+            }
+        }
+
+        return messageList;
+    }
+
+    public List<Message> queryMessageListByPage(Map<String,Object> parameter) {
+        DBAccess dbAccess = new DBAccess();
+        List<Message> messageList = new ArrayList<>();
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = dbAccess.getSqlSession();
+            // 通过sqlSession执行sQL语句
+            IMessage imessage = sqlSession.getMapper(IMessage.class);
+            messageList = imessage.queryMessageListByPage(parameter);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -85,6 +101,30 @@ public class MessageDao {
         }
     }
 
+    /**
+     * 根据查询条件查询消息列表的条数
+     * @param message
+     * @return
+     */
+    public int count(Message message) {
+        DBAccess dbAccess = new DBAccess();
+        SqlSession sqlSession = null;
+        int result = 0;
+        try {
+            sqlSession = dbAccess.getSqlSession();
+            // 通过sqlSession执行sQL语句
+            IMessage iMessage = sqlSession.getMapper(IMessage.class);
+            result = iMessage.count(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (sqlSession != null) {
+                sqlSession.close();
+            }
+        }
+        return result;
+    }
+
 //    public List<Message> queryMessageList(String command, String description) {
 //
 //        List<Message> messageList = new ArrayList<>();
@@ -132,7 +172,6 @@ public class MessageDao {
 
     public static void main(String[] args) {
         MessageDao messageDao = new MessageDao();
-        messageDao.queryMessageList("", "");
         Map<String,Message> messageMap = new HashMap<>();
         messageMap.put("key",new Message());
 //        Logger log ;

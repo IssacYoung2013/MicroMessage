@@ -17,9 +17,34 @@
         <result column="CONTENT" jdbcType="VARCHAR" property="content"/>
     </resultMap>
 
-    <select id="queryMessageList" parameterType="com.issac.bean.Message" resultMap="MessageResult">
+    <select id="queryMessageList" parameterType="java.util.Map" resultMap="MessageResult">
         select
         <include refid="columns"/>
+        from MESSAGE
+        <where>
+            <if test="message.command != null and !&quot;&quot;.equals(message.command.trim())">and COMMAND = #{message.command}</if>
+            <if test="message.description != null and !&quot;&quot;.equals(message.description.trim())">and DESCRIPTION like '%'
+                #{message.description} '%'
+            </if>
+        </where>
+        ORDER BY ID limit #{page.dbIndex},#{page.dbNumber}
+    </select>
+
+    <select id="queryMessageListByPage" parameterType="java.util.Map" resultMap="MessageResult">
+        select
+        <include refid="columns"/>
+        from MESSAGE
+        <where>
+            <if test="message.command != null and !&quot;&quot;.equals(message.command.trim())">and COMMAND = #{message.command}</if>
+            <if test="message.description != null and !&quot;&quot;.equals(message.description.trim())">and DESCRIPTION like '%'
+                #{message.description} '%'
+            </if>
+        </where>
+        ORDER BY ID
+    </select>
+
+    <select id="count" parameterType="com.issac.bean.Message" resultType="int">
+        select count(*)
         from MESSAGE
         <where>
             <if test="command != null and !&quot;&quot;.equals(command.trim())">and COMMAND = #{command}</if>
@@ -27,14 +52,6 @@
                 #{description} '%'
             </if>
         </where>
-
-        <!--代替where标签-->
-        <trim prefix="where" prefixOverrides="and/or">
-            <if test="command != null and !&quot;&quot;.equals(command.trim())">and COMMAND = #{command}</if>
-            <if test="description != null and !&quot;&quot;.equals(description.trim())">and DESCRIPTION like '%'
-                #{description} '%'
-            </if>
-        </trim>
 
     </select>
 

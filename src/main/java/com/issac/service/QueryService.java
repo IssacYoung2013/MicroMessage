@@ -5,9 +5,12 @@ import com.issac.bean.CommandContent;
 import com.issac.bean.Message;
 import com.issac.dao.CommandDao;
 import com.issac.dao.MessageDao;
+import com.issac.entity.Page;
 import com.issac.util.Iconst;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -17,9 +20,41 @@ import java.util.Random;
  */
 public class QueryService {
 
-    public List<Message> queryMessageList(String command, String description) {
+    public List<Message> queryMessageList(String command, String description,Page page) {
+        // 组织消息对象
+        Message message = new Message();
+        message.setCommand(command);
+        message.setDescription(description);
+
         MessageDao messageDao = new MessageDao();
-        return messageDao.queryMessageList(command, description);
+        // 根据条件查询条数
+        int totalNumber = messageDao.count(message);
+        // 组织分页查询参数
+        page.setTotalNumber(totalNumber);
+        page.count();
+        Map<String,Object> parameter = new HashMap<>();
+        parameter.put("message",message);
+        parameter.put("page",page);
+
+        // 分页查询返回结果
+        return messageDao.queryMessageList(parameter);
+    }
+
+
+    public List<Message> queryMessageListByPage(String command, String description,Page page) {
+        // 组织消息对象
+        Message message = new Message();
+        message.setCommand(command);
+        message.setDescription(description);
+
+        MessageDao messageDao = new MessageDao();
+
+        Map<String,Object> parameter = new HashMap<>();
+        parameter.put("message",message);
+        parameter.put("page",page);
+
+        // 分页查询返回结果
+        return messageDao.queryMessageListByPage(parameter);
     }
 
     /**
